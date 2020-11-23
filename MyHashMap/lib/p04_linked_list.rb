@@ -43,7 +43,12 @@ class LinkedList
   end
 
   def get(key)
-
+    self.each do |node|
+      if node.key == key
+        return node.val
+      end
+    end
+    nil
   end
 
   def include?(key)
@@ -53,7 +58,7 @@ class LinkedList
   def append(key, val)
     if @head.key == nil && @head.val == nil
       @head = Node.new(key, val)
-      @head.next = @head
+      @head.next = nil
       @tail.prev = @head
       @tail = @head
       return 
@@ -64,15 +69,42 @@ class LinkedList
   end
 
   def update(key, val)
-
+    self.each do |node|
+      if node.key == key
+        node.val = val
+      end
+    end
   end
 
   def remove(key)
-
+    self.each do |node|
+      if node.key == key
+        if node.prev != nil && node.next != nil
+          node.prev.next = node.next
+          node.next.prev = node.prev
+        elsif node.prev == nil && node.next == nil
+          @head = Node.new
+          @tail = @head
+        elsif node == @head
+          if @head.next != nil
+            @head = @head.next
+          else
+            @head = Node.new
+          end
+        elsif node == @tail
+          @tail.prev = nil
+        end
+      end
+    end
   end
 
-  def each
-
+  def each(&prc)
+    current = @head
+    while current != nil
+      prc.call(current)
+      current = current.next 
+    end
+    self
   end
 
   # uncomment when you have `each` working and `Enumerable` included
