@@ -64,6 +64,7 @@ class LinkedList
       return 
     else
       @tail.next = Node.new(key, val)
+      @tail.next.prev = @tail.prev
       @tail = @tail.next
     end
   end
@@ -82,6 +83,7 @@ class LinkedList
         if node.prev != nil && node.next != nil
           node.prev.next = node.next
           node.next.prev = node.prev
+          p node
         elsif node.prev == nil && node.next == nil
           @head = Node.new
           @tail = @head
